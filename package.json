@@ -3,6 +3,14 @@
 	"private": true,
 	"version": "0.1.0",
 	"type": "module",
+	"imports": {
+		"#root/*": "./src/*.ts"
+	},
+	"exports": {
+		"./option": "./exports/option.ts",
+		"./contracts": "./exports/contracts.ts",
+		"./errors": "./exports/errors.ts"
+	},
 	"devDependencies": {
 		"@types/node": "^24.3.0"
 	}
