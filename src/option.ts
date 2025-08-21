@@ -27,8 +27,7 @@ class DefaultOption<T> implements Option<T>
 
 	static None = <T = never>(): Option<T> =>new DefaultOption<T>(OptionVariant.None);
 	static Some = <T>(value: NonNullable<T>): Option<T> => new DefaultOption<T>(OptionVariant.Some, value);
-	static from = <T>(value: T | null | undefined): Option<NonNullable<T>> =>
-	{
+	static from = <T>(value: T | null | undefined): Option<NonNullable<T>> => {
 		return value == null ? None() : Some<NonNullable<T>>(value);
 	};
 
@@ -47,8 +46,7 @@ class DefaultOption<T> implements Option<T>
 	{
 		this.type = ty;
 
-		if (value != null)
-		{
+		if (value != null) {
 			this.value = value;
 		}
 	}
@@ -59,40 +57,25 @@ class DefaultOption<T> implements Option<T>
 
 	and_then<U>(fn: (value: T) => Option<U>): Option<U>
 	{
-		try
-		{
-			return fn(this.unwrap());
-		}
-		catch
-		{
-			return None();
-		}
+		try   { return fn(this.unwrap()) }
+		catch { return None() }
 	}
 	
 	filter(predicate_fn: (value: T) => value is NonNullable<T>): Option<T>
 	{
-		try 
-		{
+		try {
 			const value = this.unwrap();
-			if (predicate_fn(value)) return Some(value);
-		}
-		catch
-		{
-		}
+			if (predicate_fn(value)) 
+				return Some(value);
+		} catch { }
 
 		return None();
 	}
 
 	filter_map<U>(map_fn: (value: T) => Option<U>): Option<U> 
 	{
-		try 
-		{
-			return map_fn(this.unwrap());
-		}
-		catch 
-		{
-			return None();
-		}
+		try   { return map_fn(this.unwrap()) }
+		catch { return None() }
 	}
 
 	is_none(): this is Option<never>
@@ -107,14 +90,8 @@ class DefaultOption<T> implements Option<T>
 
 	map<U>(map_fn: (value: T) => U): Option<U>
 	{
-		try
-		{
-			return Some(map_fn(this.unwrap())!);
-		}
-		catch 
-		{
-			return None();
-		}
+		try   { return Some(map_fn(this.unwrap())!) }
+		catch { return None() }
 	}
 
 	or(or_value: Option<T>): Option<T>
@@ -140,28 +117,16 @@ class DefaultOption<T> implements Option<T>
 
 	zip<U>(other: Option<U>): Option<[T, U]>
 	{
-		try
-		{
-			return Some([this.unwrap(), other.unwrap()]);
-		}
-		catch
-		{
-			return None();
-		}
+		try   { return Some([this.unwrap(), other.unwrap()]) }
+		catch { return None() }
 	}
 
 	/* Safety */
 
 	clone(): this
 	{
-		try
-		{
-			return Some(this.unwrap()!) as this;
-		}
-		catch
-		{
-			return None() as this;
-		}
+		try   { return Some(this.unwrap()!) as this }
+		catch { return None() as this }
 	}
 
 	expect(msg: string): T
@@ -183,26 +148,14 @@ class DefaultOption<T> implements Option<T>
 
 	unwrap_or(def: T): T
 	{
-		try
-		{
-			return this.unwrap();
-		}
-		catch
-		{
-			return def;
-		}
+		try   { return this.unwrap() }
+		catch { return def }
 	}
 
 	unwrap_or_else<U extends T>(default_fn: () => U): T | U
 	{
-		try 
-		{
-			return this.unwrap();
-		} 
-		catch
-		{
-			return default_fn();
-		}
+		try   { return this.unwrap() } 
+		catch { return default_fn() }
 	}
 }
 

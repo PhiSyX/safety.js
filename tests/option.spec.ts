@@ -123,11 +123,16 @@ it("Option: {unwrap_or, unwrap_or_else}", ({ assert }) => {
 });
 
 it("Option: replace", ({ assert }) => {
-	assert.deepEqual(Some<string>("hello").replace("world"), Some("world"));
+	let x = Some<string>("hello");
+	let y = x.replace("world");
+
+	assert.deepEqual(x, Some("world"));
+	assert.deepEqual(y, Some("hello"));
 
 	// NOTE: Le type `Option<string>` est requis ici.
 	let maybe_str: Option<string> = None();
-	assert.deepEqual(maybe_str.replace("world"), Some("world"));
+	maybe_str.replace("world");
+	assert.deepEqual(maybe_str, Some("world"));
 });
 
 it("Option: replace null value", ({ assert }) => {

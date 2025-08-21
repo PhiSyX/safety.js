@@ -8,26 +8,25 @@ interface Safety<T>
 	expect(msg: string): T;
 
 	/**
-	 * Retourne la valeur contenue dans le container.
+	 * Returns the contained value.
 	 */
 	unwrap(): T;
+	
 
 	/**
-	 * Retourne la valeur contenue dans le container. Peut retourner une valeur
-	 * unsafe.
-	 */
-	unwrap_unchecked(): T;
-
-	/**
-	 * Retourne la valeur contenue dans le container ou une valeur par défaut.
+	 * Returns the contained value or a provided default.
 	 */
 	unwrap_or(def: T): T;
 	
 	/**
-	 * Retourne la valeur contenue dans le container ou une valeur par défaut
-	 * avec l'utilisation d'une fonction de retour.
+	 * Returns the contained value or computes it from a closure.
 	 */
 	unwrap_or_else<U extends T>(default_fn: () => U): T | U;
+
+	/**
+	 * Returns the contained value, without checking that the value is not nil.
+	 */
+	unwrap_unchecked(): T;
 }
 
 // ------ //
