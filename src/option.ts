@@ -129,14 +129,13 @@ class DefaultOption<T> implements Option<T>
 		return this;
 	}
 
-	replace<U extends T>(value: U): Option<U>
+	replace(value: T): Option<T>
 	{
-		if (value == null) return None();
-	
+		if (value == null) return this;
+		const old = this.clone();
 		this.type = OptionVariant.Some;
 		this.value = value;
-
-		return this as unknown as Option<U>;
+		return old;
 	}
 
 	zip<U>(other: Option<U>): Option<[T, U]>
@@ -211,4 +210,4 @@ class DefaultOption<T> implements Option<T>
 // Export //
 // ------ //
 
-export const { None, Some, from } = DefaultOption;
+export const { None, Some, from: toOption } = DefaultOption;

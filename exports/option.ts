@@ -1,1 +1,1 @@
-export { None, Some, from } from "#root/option";
+export { None, Some, toOption } from "#root/option";

@@ -6,68 +6,70 @@ import type { Safety } from "#root/contract/safety";
 
 interface Option<T> extends Safety<T>
 {
-    and_then<U>(fn: (value: T) => Option<U>): Option<U>;
+	/**
+	 * Returns [`None`] if the option is [`None`], otherwise calls `fn` with the
+	 * wrapped value and returns the result.
+	 */
+	and_then<U>(fn: (value: T) => Option<U>): Option<U>;
 
 	/**
-	 * Filtre la valeur contenue dans [`Some`].
+	 * Returns [`None`] if the option is [`None`], otherwise calls
+	 * `predicate_fn` with the wrapped value and returns:
+	 *
+	 * `Some(t)` if predicate returns `true` (where `t` is the wrapped value),
+	 * and `None` if predicate returns `false`.
 	 */
 	filter(predicate_fn: (value: T) => boolean): Option<T>;
 
     /**
-	 * Applique une nouvelle valeur, sur la valeur contenue dans [`Some`].
-	 *
-	 * @example ```js
-	 * Some(42).filter_map((n) => {
-	 *    if (n >= 18) return Some(n * 2);
-	 * 	  return None();
-	 * });
-	 * ```
+	 * Returns [`None`] if the option is [`None`], otherwise calls
+	 * `map_fn` with the wrapped value.
+	 * 
+	 * Is a shortened version of `Option.filter().map()`.
 	 */
 	filter_map<U>(map_fn: (value: T) => Option<U>): Option<U>;
 
     /**
-	 * La valeur de l'option n'est pas safe.
+	 * Returns `true` if the option is a [`None`] value.
 	 */
-    is_none(): this is Option<never>;
+	is_none(): this is Option<never>;
 
     /**
-	 * La valeur de l'option est safe.
+	 * Returns `true` if the option is a [`Some`] value.
 	 */
-    is_some(): this is Option<T>;
+	is_some(): this is Option<T>;
 
     /**
-	 * Applique une nouvelle valeur, sur la valeur contenue dans [`Some`].
+	 * Maps an `Option<T>` to `Option<U>` by applying a function to a contained
+	 * value (if [`Some`]) or returns [`None`] (if [`None`]).
 	 */
 	map<U>(map_fn: (value: T) => U): Option<U>;
 
     /**
-	 * Applique une valeur dans le cas de `None`.
+	 * Returns the option if it contains a value, otherwise returns `or_value`.
 	 *
-	 * @example ```js
-	 * let maybe_str: Option<string> = None();
-	 * maybe_str.or(Some("Hello World"));
-	 * ```
+	 * Arguments passed to or are eagerly evaluated; if you are passing the
+	 * result of a function call, it is recommended to use `or_else`, which is
+	 * lazily evaluated.
 	 */
 	or(or_value: Option<T>): Option<T>;
 
     /**
-	 * Appelle une fonction en cas de `None`.
-	 *
-	 * @example ```js
-	 * let maybe_str: Option<string> = None();
-	 * maybe_str.or_else(() => Some("Hello World"));
-	 * ```
+	 * Returns the option if it contains a value, otherwise calls `or_fn` and
+	 * returns the result.
 	 */
 	or_else(or_fn: () => Option<T>): Option<T>;
 
     /**
-	 * Remplace la valeur de l'instance actuelle.
+	 * Replaces the actual value in the option by the value given in parameter,
+	 * returning the old value if present, leaving a [`Some`] in its place
+	 * without de-initializing either one.
 	 */
-    replace<U extends T>(value: U): Option<U>;
+	replace(value: T): Option<T>;
 
     /**
-	 * Combine deux [Some] ensemble, et retourne un tuple de taille 2 des
-	 * valeurs qui sont contenues dans leur propre [Some].
+	 * If this is `Some(s)` and other is `Some(o)`, this method returns Some([s,
+	 * o]). Otherwise, None is returned.
 	 */
 	zip<U>(other: Option<U>): Option<[T, U]>;
 }

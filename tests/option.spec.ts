@@ -1,6 +1,6 @@
 import { it } from "node:test";
 
-import { from, None, Some } from "#root/option";
+import { toOption, None, Some } from "#root/option";
 import type { Option } from "#root/contract/option";
 
 it("Option: Some", ({ assert }) => {
@@ -13,10 +13,10 @@ it("Option: None", ({ assert }) => {
 	assert.deepEqual(None(), None());
 });
 
-it("Option: from", ({ assert }) => {
-	assert.deepEqual(from(null), None());
-	assert.deepEqual(from(undefined), None());
-	assert.deepEqual(from("hello"), Some("hello"));
+it("Option: toOption", ({ assert }) => {
+	assert.deepEqual(toOption(null), None());
+	assert.deepEqual(toOption(undefined), None());
+	assert.deepEqual(toOption("hello"), Some("hello"));
 });
 
 it("Option: {is_some, is_none}", ({ assert }) => {
